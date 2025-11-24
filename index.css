@@ -47,7 +47,8 @@ body {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1800px;
+    width: 95%;
     margin: 0 auto;
     padding: 20px;
     display: flex;
@@ -56,11 +57,14 @@ body {
 }
 
 header {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     padding: 20px;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 header h1 {
@@ -80,19 +84,24 @@ header h1 {
 
 .workspace {
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 20px;
+    grid-template-columns: 260px 1fr;
+    gap: 25px;
 }
 
 .components-panel {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     height: fit-content;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
+    position: sticky;
+    top: 20px;
 }
 
 .components-panel h3 {
@@ -131,13 +140,19 @@ header h1 {
     user-select: none;
     font-weight: bold;
     font-size: 14px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 
+        inset 0 0 10px rgba(255,255,255,0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .component:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.15) translateY(-2px);
+    box-shadow: 
+        inset 0 0 15px rgba(255,255,255,0.4),
+        0 8px 15px rgba(0, 0, 0, 0.3);
+    z-index: 10;
 }
 
 .component:active {
@@ -160,7 +175,7 @@ header h1 {
 .canvas-component.sugar {
     color: white;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 12px;
     /* 五邊形形狀 - 代表五碳醣 */
     clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%) !important;
     width: 60px !important;
@@ -187,7 +202,7 @@ header h1 {
 
 .base,
 .canvas-component.base {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: bold;
     color: white;
     display: flex;
@@ -226,10 +241,13 @@ header h1 {
 }
 
 .assembly-area {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -244,17 +262,23 @@ header h1 {
 }
 
 .work-canvas {
-    min-height: 400px;
-    border: 2px dashed #bdc3c7;
+    min-height: 70vh;
+    border: 2px solid rgba(189, 195, 199, 0.6);
     border-radius: 15px;
-    background: rgba(236, 240, 241, 0.3);
+    background-color: rgba(245, 247, 250, 0.6);
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
     position: relative;
     overflow: hidden;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .work-canvas.drag-over {
     border-color: #3498db;
-    background: rgba(52, 152, 219, 0.1);
+    background-color: rgba(52, 152, 219, 0.15);
 }
 
 .canvas-hint {
@@ -278,7 +302,10 @@ header h1 {
     font-weight: bold;
     font-size: 14px;
     transition: box-shadow 0.3s ease, border 0.3s ease, --component-scale 0.2s ease, --component-rotate 0.2s ease; /* 過渡效果 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        inset 0 0 10px rgba(255,255,255,0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -288,7 +315,9 @@ header h1 {
 }
 
 .canvas-component:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        inset 0 0 15px rgba(255,255,255,0.4),
+        0 8px 15px rgba(0, 0, 0, 0.3);
     z-index: 10;
 }
 
@@ -426,18 +455,20 @@ header h1 {
     border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
     transition: all 0.3s ease;
-    background: #3498db;
+    background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
     flex: 1;
     max-width: 180px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 .controls button:hover {
-    background: #2980b9;
+    background: linear-gradient(135deg, #2980b9, #2573a7);
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
 }
 
 .controls button:active {
@@ -475,10 +506,13 @@ header h1 {
 }
 
 .info-panel {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     text-align: center;
 }
 
