@@ -1,0 +1,17 @@
+{
+  "name": "dna-rna-simulator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A dependency-free, Traditional Chinese DNA/RNA connectivity simulator.",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "test:browser": "playwright test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

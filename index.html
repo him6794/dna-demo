@@ -1,110 +1,182 @@
 <!DOCTYPE html>
-<!-- saved from url=(0035)https://4b211be5.dna-5sl.pages.dev/ -->
-<html lang="zh-TW"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DNA/RNA 組合模擬器</title>
+    <meta name="description" content="透過拖曳、觸控與鍵盤組合 DNA 和 RNA，探索核苷酸組成與鹼基配對規則。免費、免安裝的互動教學工具。">
+    <meta name="theme-color" content="#6255b8">
+    <title>DNA/RNA 組合模擬器｜核酸探索實驗室</title>
     <link rel="stylesheet" href="index.css">
+    <script src="simulator-model.js" defer></script>
+    <script src="index.js" defer></script>
 </head>
 <body>
-    <div class="background-animation">
-        <div class="animated-bg-item" style="width: 300px; height: 300px; top: 10%; left: 5%; opacity: 0.3; animation-duration: 25s;"></div>
-        <div class="animated-bg-item" style="width: 200px; height: 200px; top: 40%; left: 80%; opacity: 0.2; animation-duration: 18s;"></div>
-        <div class="animated-bg-item" style="width: 250px; height: 250px; top: 70%; left: 30%; opacity: 0.15; animation-duration: 20s; animation-delay: 2s;"></div>
-        <div class="animated-bg-item" style="width: 180px; height: 180px; top: 15%; left: 65%; opacity: 0.25; animation-duration: 22s; animation-delay: 5s;"></div>
-        <div class="animated-bg-item" style="width: 220px; height: 220px; top: 60%; left: 10%; opacity: 0.2; animation-duration: 30s; animation-delay: 3s;"></div>
-    </div>
-    
-    <div class="container">
-        <header>
-            <h1>核酸組合模擬器</h1>
-            <div class="info-text">
-                <p>拖拽組件以構建 DNA/RNA 鏈，探索分子結構的奧秘</p>
+    <a class="skip-link" href="#work-canvas">跳至組合區域</a>
+    <div class="background-animation" aria-hidden="true"></div>
+    <main class="container">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">DNA / RNA · 互動探索</p>
+                <h1>核酸組合模擬器</h1>
+                <p class="intro">從一個組件開始，親手探索生命的分子結構。</p>
             </div>
+            <a class="guide-link" href="#structure-rules">操作與組合規則 <span aria-hidden="true">↗</span></a>
         </header>
 
         <div class="workspace">
-            <!-- 組件庫 -->
-            <div class="components-panel">
-                <h3>組件庫</h3>
-                
-                <div class="component-group">
-                    <h4>磷酸基</h4>
-                    <div class="component phosphate" draggable="true" data-type="phosphate">
-                        <span>P</span>
-                    </div>
+            <aside class="components-panel" aria-labelledby="components-heading">
+                <div class="panel-heading">
+                    <p class="eyebrow">01 · 選擇組件</p>
+                    <h2 id="components-heading">組件庫</h2>
+                    <p class="muted">點一下加入，或拖曳至畫布。</p>
                 </div>
-                
-                <div class="component-group">
-                    <h4>五炭醣</h4>
-                    <div class="component sugar deoxyribose" draggable="true" data-type="sugar" data-sugar-type="deoxyribose">
-                        <span>去氧核糖</span>
+                <section class="component-group" aria-labelledby="phosphate-heading">
+                    <h3 id="phosphate-heading">磷酸基</h3>
+                    <div class="palette-items">
+                        <div class="palette-item">
+                            <button type="button" class="component phosphate" draggable="true" data-type="phosphate" aria-label="加入磷酸基" title="加入磷酸基"><span>P</span></button>
+                            <span>磷酸基</span>
+                        </div>
                     </div>
-                    <div class="component sugar ribose" draggable="true" data-type="sugar" data-sugar-type="ribose">
-                        <span>核糖</span>
+                </section>
+                <section class="component-group" aria-labelledby="sugar-heading">
+                    <h3 id="sugar-heading">五碳糖</h3>
+                    <div class="palette-items">
+                        <div class="palette-item">
+                            <button type="button" class="component sugar deoxyribose" draggable="true" data-type="sugar" data-sugar-type="deoxyribose" aria-label="加入去氧核糖" title="加入去氧核糖"><span>去氧<br>核糖</span></button>
+                            <span>DNA</span>
+                        </div>
+                        <div class="palette-item">
+                            <button type="button" class="component sugar ribose" draggable="true" data-type="sugar" data-sugar-type="ribose" aria-label="加入核糖" title="加入核糖"><span>核糖</span></button>
+                            <span>RNA</span>
+                        </div>
                     </div>
+                </section>
+                <section class="component-group" aria-labelledby="bases-heading">
+                    <h3 id="bases-heading">含氮鹼基</h3>
+                    <div class="palette-items bases-container">
+                        <div class="palette-item">
+                            <button type="button" class="component base adenine" draggable="true" data-type="base" data-base="A" aria-label="加入腺嘌呤 A" title="加入腺嘌呤 A">A</button>
+                            <span>腺嘌呤</span>
+                        </div>
+                        <div class="palette-item">
+                            <button type="button" class="component base thymine" draggable="true" data-type="base" data-base="T" aria-label="加入胸腺嘧啶 T" title="加入胸腺嘧啶 T">T</button>
+                            <span>胸腺嘧啶</span>
+                        </div>
+                        <div class="palette-item">
+                            <button type="button" class="component base cytosine" draggable="true" data-type="base" data-base="C" aria-label="加入胞嘧啶 C" title="加入胞嘧啶 C">C</button>
+                            <span>胞嘧啶</span>
+                        </div>
+                        <div class="palette-item">
+                            <button type="button" class="component base guanine" draggable="true" data-type="base" data-base="G" aria-label="加入鳥嘌呤 G" title="加入鳥嘌呤 G">G</button>
+                            <span>鳥嘌呤</span>
+                        </div>
+                        <div class="palette-item">
+                            <button type="button" class="component base uracil" draggable="true" data-type="base" data-base="U" aria-label="加入尿嘧啶 U" title="加入尿嘧啶 U">U</button>
+                            <span>尿嘧啶</span>
+                        </div>
+                    </div>
+                </section>
+                <div class="example-controls">
+                    <p class="muted">第一次使用？從範例開始。</p>
+                    <button type="button" id="load-dna-example">載入 DNA 範例 <span aria-hidden="true">→</span></button>
+                    <button type="button" id="load-rna-example">載入 RNA 範例 <span aria-hidden="true">→</span></button>
                 </div>
+            </aside>
 
-                <div class="component-group">
-                    <h4>含氮鹼基</h4>
-                    <div class="bases-container">
-                        <div class="component base adenine" draggable="true" data-type="base" data-base="A">A</div>
-                        <div class="component base thymine" draggable="true" data-type="base" data-base="T">T</div>
-                        <div class="component base cytosine" draggable="true" data-type="base" data-base="C">C</div>
-                        <div class="component base guanine" draggable="true" data-type="base" data-base="G">G</div>
-                        <div class="component base uracil" draggable="true" data-type="base" data-base="U">U</div>
+            <section class="assembly-area" aria-labelledby="assembly-heading">
+                <div class="assembly-heading">
+                    <div>
+                        <p class="eyebrow">02 · 連接與探索</p>
+                        <h2 id="assembly-heading">組合區域</h2>
+                    </div>
+                    <div class="stats" aria-label="畫布統計">
+                        <span><strong id="component-count">0</strong> 組件</span>
+                        <span><strong id="connection-count">0</strong> 化學鍵</span>
+                        <span><strong id="nucleotide-count">0</strong> 核苷酸</span>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 組合區域 -->
-            <div class="assembly-area">
-                <h3>組合區域</h3>
-                <div class="work-canvas" id="work-canvas">
-                    <div class="canvas-hint">將組件拖拽到此處進行組合</div>
-                    <div class="key-hint">按ESC鍵或點擊空白處可取消連線</div>
-                    <div class="mode-indicator" id="mode-indicator"></div>
+                <div class="controls" aria-label="作品工具">
+                    <div class="control-group">
+                        <button type="button" id="undo" disabled title="復原（Ctrl / Cmd + Z）"><span aria-hidden="true">↶</span> 復原</button>
+                        <button type="button" id="redo" disabled title="重做（Ctrl / Cmd + Shift + Z）"><span aria-hidden="true">↷</span> 重做</button>
+                    </div>
+                    <div class="control-group">
+                        <button type="button" id="import-project">匯入</button>
+                        <button type="button" id="export-project">匯出</button>
+                        <button type="button" id="clear-all" class="danger-button">清除全部</button>
+                        <input type="file" id="import-file" accept=".json,application/json" hidden aria-label="選擇核酸作品 JSON 檔案">
+                    </div>
                 </div>
-                
-                <div class="controls">
-                    <button id="clear-all">清除全部</button>
+                <p class="save-status" id="save-status">自動儲存在此瀏覽器</p>
+                <div class="canvas-viewport" id="canvas-viewport" tabindex="0" role="region" aria-label="可捲動的組合畫布">
+                    <div class="work-canvas" id="work-canvas" tabindex="-1" aria-label="核酸組合畫布" aria-describedby="canvas-instructions">
+                        <div class="canvas-hint">
+                            <span class="empty-symbol" aria-hidden="true">P — ⬟ — A</span>
+                            <strong>你的分子探索，從這裡開始</strong>
+                            <span>點選組件加入，或載入一個範例。</span>
+                        </div>
+                        <div class="key-hint">點選另一個組件連線 · Esc 取消</div>
+                        <div class="mode-indicator" id="mode-indicator"></div>
+                    </div>
                 </div>
-                
-                <div class="validation-result" id="validation-result"></div>
-            </div>
+                <div class="selected-toolbar" id="selected-toolbar" role="group" aria-label="所選組件工具" hidden>
+                    <span class="selection-label">所選組件</span>
+                    <button type="button" id="rotate-left" title="向左旋轉 15°（[）">↶ 旋轉 15°</button>
+                    <button type="button" id="rotate-right" title="向右旋轉 15°（]）">↷ 旋轉 15°</button>
+                    <button type="button" id="disconnect-selected">移除連線</button>
+                    <button type="button" id="delete-selected" class="danger-button">刪除組件</button>
+                </div>
+                <p class="canvas-instructions" id="canvas-instructions">選取兩個組件以連線；拖曳可移動整組。點選化學鍵可移除連線。</p>
+                <div class="validation-result info" id="validation-result" role="status" aria-live="polite" aria-atomic="true">準備好了！加入組件，開始建立你的第一個核苷酸。</div>
+            </section>
         </div>
-        
-        <div class="info-panel">
-            <h3>組合規則</h3>
-            <div id="structure-rules">
-                <p><strong>核苷酸鏈組成：</strong></p>
-                <ul>
-                    <li>DNA：磷酸基 + 去氧核醣 + 含氮鹼基 (A,T,C,G)</li>
-                    <li>RNA：磷酸基 + 核醣 + 含氮鹼基 (A,U,C,G)</li>
-                </ul>
-                <p><strong>配對規則：</strong></p>
-                <ul>
-                    <li>A (腺嘌呤) ↔ T (胸腺嘧啶)</li>
-                    <li>A (腺嘌呤) ↔ U (尿嘧啶)</li>
-                    <li>C (胞嘧啶) ↔ G (鳥嘌呤)</li>
-                </ul>
-                <p><strong>化學鍵類型：</strong></p>
-                <ul>
-                    <li><span class="bond-example strong-bond"></span> <strong>共價鍵</strong> - 磷酸基與糖類</li>
-                    <li><span class="bond-example weak-bond"></span> <strong>糖苷鍵</strong> - 糖類與鹼基</li>
-                    <li><span class="bond-example hydrogen-bond"></span> <strong>氫鍵</strong> - 鹼基配對</li>
-                </ul>
-                <p><strong>操作說明：</strong></p>
-                <ul>
-                    <li>拖拽組件到組合區域</li>
-                    <li>點擊組件進行手動連線</li>
-                    <li>右鍵點擊進入旋轉模式，左鍵拖動旋轉</li>
-                    <li>按住Shift鍵進行精細旋轉調整</li>
-                    <li>拖動到區域外自動刪除</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
-    <script src="index.js"></script>
-</body></html>
+        <section class="info-panel" id="structure-rules" aria-labelledby="rules-heading">
+            <div class="rules-heading">
+                <div><p class="eyebrow">探索筆記</p><h2 id="rules-heading">理解組合的規則</h2></div>
+                <p class="muted">形狀辨識組件，線條區分化學鍵。</p>
+            </div>
+            <div class="rule-grid">
+                <section>
+                    <h3>一個核苷酸，三種組件</h3>
+                    <p><strong>DNA</strong>：磷酸基 + 去氧核糖 + A、T、C 或 G</p>
+                    <p><strong>RNA</strong>：磷酸基 + 核糖 + A、U、C 或 G</p>
+                    <p class="muted">糖與磷酸基交替連接，形成核酸鏈的骨架。</p>
+                </section>
+                <section>
+                    <h3>互補鹼基配對</h3>
+                    <ul class="pairing-list">
+                        <li><strong>A ↔ T</strong><span>DNA 中的配對</span></li>
+                        <li><strong>A ↔ U</strong><span>RNA 中的配對</span></li>
+                        <li><strong>C ↔ G</strong><span>DNA 與 RNA 皆適用</span></li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>認識連線</h3>
+                    <ul class="bond-legend">
+                        <li><span class="bond-example strong-bond" aria-hidden="true"></span><span><strong>磷酸酯鍵</strong> · 糖與磷酸基（共價鍵）</span></li>
+                        <li><span class="bond-example weak-bond" aria-hidden="true"></span><span><strong>糖苷鍵</strong> · 糖與鹼基（共價鍵）</span></li>
+                        <li><span class="bond-example hydrogen-bond" aria-hidden="true"></span><span><strong>氫鍵</strong> · 互補鹼基配對</span></li>
+                    </ul>
+                </section>
+            </div>
+            <details class="keyboard-guide">
+                <summary>操作說明與鍵盤快捷鍵</summary>
+                <div class="shortcut-grid">
+                    <p><strong>加入與連線</strong>點選、觸碰或用 Tab 選取組件庫按 Enter 加入；依序選取兩個畫布組件即可連線。</p>
+                    <p><strong>移動與旋轉</strong>拖曳移動相連組件；右鍵進入旋轉模式，再拖曳旋轉，按 Shift 可精細調整。</p>
+                    <p><strong>鍵盤操作</strong>聚焦組件後，用方向鍵移動 10 px，按 Shift 改為 1 px；<kbd>[</kbd> / <kbd>]</kbd> 旋轉 15°，<kbd>Delete</kbd> 刪除。</p>
+                    <p><strong>取消與復原</strong><kbd>Esc</kbd> 或點擊畫布空白處取消選取；Ctrl / Cmd + Z 復原，加入 Shift 重做。範例與清除也可復原。</p>
+                    <p><strong>管理連線</strong>點選化學鍵或聚焦後按 Enter 即可移除；選取組件後按「移除連線」可解除它的所有連線。</p>
+                    <p><strong>保存作品</strong>作品會儲存在此瀏覽器中。匯出 JSON 可另存備份；匯入會取代目前畫布，並可用復原還原。</p>
+                </div>
+            </details>
+            <p class="model-note">這是簡化的核酸連接教學模型；線條代表連接關係，未模擬原子結構、鍵角、5′ / 3′ 方向或三維構形。完整核苷酸數以連有磷酸基與鹼基的糖計算。</p>
+            <p class="source-links">延伸閱讀（NHGRI）：<a href="https://www.genome.gov/genetics-glossary/Nucleotide">核苷酸 Nucleotide</a><a href="https://www.genome.gov/genetics-glossary/Base-Pair">鹼基配對 Base Pair</a></p>
+        </section>
+        <footer>自由組合 · 即時探索 · 在你的瀏覽器裡學習</footer>
+    </main>
+    <noscript><p class="noscript-message">此模擬器需要 JavaScript 才能互動，請啟用 JavaScript 後重新載入。</p></noscript>
+</body>
+</html>
